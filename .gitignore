@@ -1,0 +1,6 @@
+data/*
+!data/.gitkeep
+_pycache_/
+*.pyc
+.venv/
+mlruns/
