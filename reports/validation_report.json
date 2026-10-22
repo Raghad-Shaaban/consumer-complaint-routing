@@ -1,0 +1,305 @@
+{
+  "input_rows": 20000,
+  "checks": {
+    "schema": {
+      "missing_columns": [],
+      "extra_columns": [],
+      "passed": true
+    },
+    "dtypes": {
+      "declared": {
+        "complaint_id": "object",
+        "date_received": "datetime64[ns, UTC]",
+        "consumer_complaint_narrative": "object",
+        "product": "object"
+      },
+      "non_string_values": {
+        "complaint_id": 0,
+        "consumer_complaint_narrative": 0,
+        "product": 0
+      },
+      "date_is_datetime": true,
+      "date_is_timezone_aware": true,
+      "complaint_id_not_all_digits": 0,
+      "passed": true
+    },
+    "missing_values": {
+      "null_counts": {
+        "complaint_id": 0,
+        "date_received": 256,
+        "consumer_complaint_narrative": 0,
+        "product": 0
+      },
+      "null_rate": {
+        "complaint_id": 0.0,
+        "date_received": 0.0128,
+        "consumer_complaint_narrative": 0.0,
+        "product": 0.0
+      },
+      "blank_string_counts": {
+        "complaint_id": 0,
+        "consumer_complaint_narrative": 0,
+        "product": 0
+      }
+    },
+    "hard_rule_violations": {
+      "id_missing_or_blank": 0,
+      "id_duplicate": 0,
+      "narrative_missing_or_blank": 0,
+      "narrative_too_short": 5,
+      "narrative_no_letters": 0,
+      "label_missing_or_blank": 0,
+      "label_not_in_known_set": 0,
+      "date_out_of_range": 0
+    },
+    "whitespace_stripped_values": 0,
+    "dates": {
+      "missing": 256,
+      "missing_rate": 0.0128,
+      "min": "2015-03-19T00:00:00+00:00",
+      "max": "2026-06-10T18:38:03+00:00",
+      "by_year": {
+        "2015.0": 275,
+        "2016.0": 413,
+        "2017.0": 631,
+        "2018.0": 612,
+        "2019.0": 692,
+        "2020.0": 927,
+        "2021.0": 1037,
+        "2022.0": 1735,
+        "2023.0": 2271,
+        "2024.0": 4287,
+        "2025.0": 6415,
+        "2026.0": 449
+      },
+      "note": "Missing dates are kept (date is metadata, not a model feature) but they cannot be used for a chronological split."
+    },
+    "narrative_quality": {
+      "chars": {
+        "min": 14,
+        "p5": 127.0,
+        "median": 667.0,
+        "p95": 3008.5999999999985,
+        "max": 25696
+      },
+      "words": {
+        "min": 3,
+        "p5": 22.0,
+        "median": 117.0,
+        "p95": 523.0,
+        "max": 4393
+      },
+      "very_short_lt_20_words": 812,
+      "very_long_gt_20000_chars": 5,
+      "contains_xxxx_redaction": 13858,
+      "contains_xxxx_redaction_rate": 0.6931,
+      "contains_non_ascii": 1,
+      "contains_url_or_email": 69,
+      "mostly_uppercase_gt_80pct_letters": 509
+    },
+    "duplicates": {
+      "duplicate_complaint_ids": 0,
+      "repeated_narrative_extra_rows": 3151,
+      "repeated_narrative_groups": 622,
+      "repeated_groups_with_conflicting_labels": 71,
+      "rows_in_conflicting_groups": 1115,
+      "largest_repeated_group_size": 165,
+      "note": "NOT removed here. Person 3 handles deduplication, conflict resolution and the group split."
+    },
+    "label_consistency": {
+      "n_classes": 20,
+      "classes_with_spelling_or_case_variants": [],
+      "unexpected_labels": [],
+      "expected_labels_absent_from_sample": [
+        "Virtual currency"
+      ],
+      "possible_overlapping_name_families": {
+        "credit_reporting": [
+          "Credit reporting",
+          "Credit reporting or other personal consumer reports",
+          "Credit reporting, credit repair services, or other personal consumer reports"
+        ],
+        "credit_card": [
+          "Credit card",
+          "Credit card or prepaid card",
+          "Prepaid card"
+        ],
+        "bank_account": [
+          "Bank account or service",
+          "Checking or savings account"
+        ],
+        "payday_loan": [
+          "Payday loan",
+          "Payday loan, title loan, or personal loan",
+          "Payday loan, title loan, personal loan, or advance loan"
+        ],
+        "money_transfer": [
+          "Money transfers",
+          "Money transfer, virtual currency, or money service"
+        ],
+        "consumer_loan": [
+          "Consumer Loan",
+          "Vehicle loan or lease"
+        ]
+      },
+      "first_last_year_seen_per_class": {
+        "Bank account or service": {
+          "first": 2015,
+          "last": 2017
+        },
+        "Checking or savings account": {
+          "first": 2017,
+          "last": 2026
+        },
+        "Consumer Loan": {
+          "first": 2015,
+          "last": 2017
+        },
+        "Credit card": {
+          "first": 2015,
+          "last": 2026
+        },
+        "Credit card or prepaid card": {
+          "first": 2017,
+          "last": 2023
+        },
+        "Credit reporting": {
+          "first": 2015,
+          "last": 2017
+        },
+        "Credit reporting or other personal consumer reports": {
+          "first": 2023,
+          "last": 2026
+        },
+        "Credit reporting, credit repair services, or other personal consumer reports": {
+          "first": 2017,
+          "last": 2023
+        },
+        "Debt collection": {
+          "first": 2015,
+          "last": 2026
+        },
+        "Debt or credit management": {
+          "first": 2023,
+          "last": 2026
+        },
+        "Money transfer, virtual currency, or money service": {
+          "first": 2017,
+          "last": 2026
+        },
+        "Money transfers": {
+          "first": 2015,
+          "last": 2017
+        },
+        "Mortgage": {
+          "first": 2015,
+          "last": 2026
+        },
+        "Other financial service": {
+          "first": 2015,
+          "last": 2016
+        },
+        "Payday loan": {
+          "first": 2015,
+          "last": 2017
+        },
+        "Payday loan, title loan, or personal loan": {
+          "first": 2017,
+          "last": 2023
+        },
+        "Payday loan, title loan, personal loan, or advance loan": {
+          "first": 2023,
+          "last": 2026
+        },
+        "Prepaid card": {
+          "first": 2015,
+          "last": 2026
+        },
+        "Student loan": {
+          "first": 2015,
+          "last": 2026
+        },
+        "Vehicle loan or lease": {
+          "first": 2017,
+          "last": 2026
+        }
+      },
+      "note": "Classes that stop/start in different years are renamed versions of the same product. Merging them is a modelling decision for later stages; it is NOT done here."
+    },
+    "class_distribution": {
+      "counts": {
+        "Credit reporting or other personal consumer reports": 8776,
+        "Credit reporting, credit repair services, or other personal consumer reports": 4284,
+        "Debt collection": 2238,
+        "Checking or savings account": 904,
+        "Mortgage": 747,
+        "Credit card": 646,
+        "Money transfer, virtual currency, or money service": 615,
+        "Credit card or prepaid card": 591,
+        "Student loan": 325,
+        "Vehicle loan or lease": 270,
+        "Credit reporting": 187,
+        "Payday loan, title loan, personal loan, or advance loan": 89,
+        "Payday loan, title loan, or personal loan": 84,
+        "Bank account or service": 82,
+        "Prepaid card": 53,
+        "Consumer Loan": 49,
+        "Debt or credit management": 35,
+        "Payday loan": 7,
+        "Money transfers": 7,
+        "Other financial service": 6
+      },
+      "share": {
+        "Credit reporting or other personal consumer reports": 0.4389,
+        "Credit reporting, credit repair services, or other personal consumer reports": 0.2143,
+        "Debt collection": 0.1119,
+        "Checking or savings account": 0.0452,
+        "Mortgage": 0.0374,
+        "Credit card": 0.0323,
+        "Money transfer, virtual currency, or money service": 0.0308,
+        "Credit card or prepaid card": 0.0296,
+        "Student loan": 0.0163,
+        "Vehicle loan or lease": 0.0135,
+        "Credit reporting": 0.0094,
+        "Payday loan, title loan, personal loan, or advance loan": 0.0045,
+        "Payday loan, title loan, or personal loan": 0.0042,
+        "Bank account or service": 0.0041,
+        "Prepaid card": 0.0027,
+        "Consumer Loan": 0.0025,
+        "Debt or credit management": 0.0018,
+        "Payday loan": 0.0004,
+        "Money transfers": 0.0004,
+        "Other financial service": 0.0003
+      },
+      "majority_class": "Credit reporting or other personal consumer reports",
+      "minority_class": "Other financial service",
+      "imbalance_ratio_max_over_min": 1462.7,
+      "rare_classes_lt_50_rows": {
+        "Consumer Loan": 49,
+        "Debt or credit management": 35,
+        "Payday loan": 7,
+        "Money transfers": 7,
+        "Other financial service": 6
+      },
+      "classes_with_lt_10_rows": {
+        "Payday loan": 7,
+        "Money transfers": 7,
+        "Other financial service": 6
+      },
+      "note": "Sample is random, not balanced. Rare classes may be missing from test or val after splitting; use macro-F1 and stratify/group-stratify."
+    }
+  },
+  "valid_rows": 19995,
+  "rejected_rows": 5,
+  "reject_rate": 0.00025,
+  "rejects_by_reason": {
+    "narrative_too_short": 5
+  },
+  "passed": true,
+  "thresholds": {
+    "MIN_WORDS": 3,
+    "MIN_CHARS": 10,
+    "MAX_REJECT_RATE": 0.05,
+    "RARE_CLASS_MIN": 50
+  }
+}
