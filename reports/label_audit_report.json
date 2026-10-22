@@ -1,0 +1,9 @@
+{
+  "rows_valid": 19995,
+  "exact_duplicates_removed": 2906,
+  "near_dup_eps": 1.0,
+  "groups": 5,
+  "train_rows": 17080,
+  "test_rows": 9,
+  "groups_in_both_sets": 0
+}
