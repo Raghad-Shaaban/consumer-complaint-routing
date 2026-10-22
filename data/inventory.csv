@@ -1,0 +1,5 @@
+column,dtype,row_count,missing_count,missing_rate,unique_nonmissing,role,description
+complaint_id,object,20000,0,0.0,20000,identifier,Unique complaint identifier; not used as a model feature.
+date_received,"datetime64[ns, UTC]",20000,256,0.0128,3539,metadata,Date the complaint was received; metadata for temporal analysis.
+consumer_complaint_narrative,object,20000,0,0.0,17024,input_feature,Consumer's written complaint; primary text input to the model.
+product,object,20000,0,0.0,20,target,Financial product category associated with the complaint; prediction target.
