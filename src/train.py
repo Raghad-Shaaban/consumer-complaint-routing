@@ -1,95 +1,87 @@
+
+"""Train the baseline CFPB complaint routing model."""
+
 from pathlib import Path
-import sys
-import json
-import pandas as pd
+
 import joblib
+import pandas as pd
+
 from features import build_pipeline
-PROJECT = Path(__file__).resolve().parents[1]
-DATA_PATH = PROJECT / "data/processed/clean.parquet"
-SPLIT_PATH = PROJECT / "data/processed/split_ids.csv"
-MODEL_PATH = PROJECT / "models/model.joblib"
+
+
+# ---------------------------------------------------------
+# Paths and configuration
+# ---------------------------------------------------------
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+DATA_PATH = PROJECT_ROOT / "data" / "clean.parquet"
+MODEL_PATH = PROJECT_ROOT / "models" / "model.joblib"
 
 TEXT_COL = "consumer_complaint_narrative"
 LABEL_COL = "product"
-ID_COL = "complaint_id"
-if not DATA_PATH.exists():
-    raise FileNotFoundError(
-        f"Missing clean data: {DATA_PATH}"
-    )
+SPLIT_COL = "split"
 
-if not SPLIT_PATH.exists():
-    raise FileNotFoundError(
-        f"Missing split file: {SPLIT_PATH}"
-    )
 
-df = pd.read_parquet(DATA_PATH)
-splits = pd.read_csv(SPLIT_PATH)
+def train_model():
+    """Train the model using only the training split."""
 
-required = {ID_COL, TEXT_COL, LABEL_COL}
+    if not DATA_PATH.exists():
+        raise FileNotFoundError(
+            f"Clean dataset not found: {DATA_PATH}\n"
+            "Run src/deduplicate_split.py first."
+        )
 
-if not required.issubset(df.columns):
-    raise ValueError("Missing required data columns")
+    df = pd.read_parquet(DATA_PATH)
 
-if not {ID_COL, "split"}.issubset(splits.columns):
-    raise ValueError(
-        "Split file must contain complaint_id and split columns"
-    )
+    required = {TEXT_COL, LABEL_COL, SPLIT_COL}
+    missing = required - set(df.columns)
 
-if df[ID_COL].duplicated().any():
-    raise ValueError("Duplicate complaint IDs in clean data")
+    if missing:
+        raise ValueError(
+            f"Dataset is missing required columns: {sorted(missing)}"
+        )
 
-if splits[ID_COL].duplicated().any():
-    raise ValueError("Duplicate complaint IDs in split file")
+    if df.empty:
+        raise ValueError("Clean dataset is empty.")
 
-df[ID_COL] = df[ID_COL].astype(str)
-splits[ID_COL] = splits[ID_COL].astype(str)
+    if not df[SPLIT_COL].isin(["train", "test"]).all():
+        raise ValueError("Split column must contain only 'train' and 'test'.")
 
-if not splits["split"].isin(["train", "test"]).all():
-    raise ValueError("Expected train/test split values")
+    train = df.loc[df[SPLIT_COL] == "train"].copy()
 
-if set(df[ID_COL]) != set(splits[ID_COL]):
-    raise ValueError("Split IDs do not match clean data IDs")
+    if train.empty:
+        raise ValueError("Training split is empty.")
 
-df = df.merge(
-    splits[[ID_COL, "split"]],
-    on=ID_COL,
-    how="inner",
-    validate="one_to_one"
-)
+    if train[TEXT_COL].isna().any():
+        raise ValueError("Training data contains missing narratives.")
 
-train = df[df["split"] == "train"]
+    if train[LABEL_COL].isna().any():
+        raise ValueError("Training data contains missing product labels.")
 
-if train.empty:
-    raise ValueError("Training set is empty")
+    X_train = train[TEXT_COL].astype(str)
+    y_train = train[LABEL_COL].astype(str)
 
-if train[TEXT_COL].isna().any():
-    raise ValueError("Missing training texts")
+    if y_train.nunique() < 2:
+        raise ValueError("Training data must contain at least two classes.")
 
-if train[LABEL_COL].isna().any():
-    raise ValueError("Missing training labels")
+    model = build_pipeline()
 
-X_train = train[TEXT_COL].astype(str)
-y_train = train[LABEL_COL]
+    print(f"Training samples: {len(train):,}")
+    print(f"Product classes: {y_train.nunique()}")
+    print("Training model...")
 
-model = build_pipeline()
+    model.fit(X_train, y_train)
 
-model.set_params(
-    classifier__class_weight="balanced"
-)
+    MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+    joblib.dump(model, MODEL_PATH)
 
-print("Training samples:", len(train))
-print("Training model...")
+    print("Model saved successfully.")
+    print(f"Location: {MODEL_PATH}")
 
-model.fit(X_train, y_train)
+    return model
 
-MODEL_PATH.parent.mkdir(
-    parents=True,
-    exist_ok=True
-)
 
-joblib.dump(model, MODEL_PATH)
-
-print("Model saved successfully!")
-print("Location:", MODEL_PATH)
+if __name__ == "__main__":
     train_model()
-# Model training script
+
