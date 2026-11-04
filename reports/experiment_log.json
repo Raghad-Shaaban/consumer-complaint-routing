@@ -1,0 +1,8 @@
+{
+  "experiment_name": "t2_leaky_feature_impact",
+  "description": "Measuring the effect of leaky columns on the model's performance.",
+  "baseline_score": 0.625,
+  "leaky_model_score": 0.847,
+  "isolated_leaky_feature_score": 0.814,
+  "conclusion": "Including the company response column causes future leakage, which misleadingly raises accuracy from 0.625 to 0.847 (and the feature alone gives 0.814)."
+}

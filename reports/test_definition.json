@@ -1,0 +1,10 @@
+{
+  "split_strategy": "chronological_time_split_with_group_purge",
+  "test_size_ratio": 0.2,
+  "test_rows_count": 3087,
+  "purged_rows_count": 216,
+  "total_train_dev_rows": 16913,
+  "test_start_date": "2025-07-18 00:00:00+00:00",
+  "test_end_date": "2026-06-10 18:38:03+00:00",
+  "note": "Time split and group purge successfully applied to prevent leakage."
+}
